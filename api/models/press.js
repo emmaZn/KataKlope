@@ -7,7 +7,7 @@ const Press = function (press) {
 };
 
 Press.create = (newPress, result) => {
-    sql.query("INSERT INTO press SET ?", newPress, (err, res) => {
+    sql.query("INSERT INTO Press SET ?", newPress, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
