@@ -1,4 +1,4 @@
-const Press = require("../models/press.models.js");
+const Press = require("../models/press.js");
 
 exports.create = (req, res) => {
     console.log("req", req.body)
