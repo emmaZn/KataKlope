@@ -10,11 +10,10 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
-// app.get("/", (req, res) => {
-//     res.json({ message: "Welcome to bezkoder application." });
-// });
-// require("./routes/index.js")(app);
-// require("./routes/user.js")(app);
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to kataklope application." });
+});
+require("./routes/press.js")(app);
 
 
 

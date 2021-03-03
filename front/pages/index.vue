@@ -3,7 +3,7 @@
     <div>
       <Logo />
       <h1 class="title">
-        kataclope
+        kataklope
       </h1>
     </div>
   </div>
