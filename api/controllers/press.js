@@ -1,7 +1,7 @@
 const Press = require("../models/press.js");
 
 exports.create = (req, res) => {
-    console.log("req", req.body)
+    console.log("req", req)
     let press = new Press(req.body)
     Press.create(press, (err, data) => {
         if (err)
