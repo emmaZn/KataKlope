@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-800 ">
+  <div class="default">
     <Nuxt />
   </div>
 </template>
@@ -21,7 +21,9 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
-
+.default {
+  background: #06040f;
+}
 .button--green {
   display: inline-block;
   border-radius: 4px;
