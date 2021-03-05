@@ -6,7 +6,17 @@ exports.create = (req, res) => {
     Press.create(press, (err, data) => {
         if (err)
             res.status(500).send({
-                message: err.message || "Some error occurred while creating the Delivery."
+                message: err.message || "Some error occurred while creating the Press."
+            });
+        else res.send(data)
+
+    });
+}
+exports.getAll = (req, res) => {
+    Press.getAll((err, data) => {
+        if (err)
+            res.status(500).send({
+                message: err.message || "Some error occurred while retrieving Pressss."
             });
         else res.send(data)
 
