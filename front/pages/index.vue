@@ -17,7 +17,14 @@
     // components: {
     //   CommitChart
     // }
-    
+    mounted() {
+
+    },
+    methods:{
+      getData() {
+        
+      }
+    }
   }
 
 </script>

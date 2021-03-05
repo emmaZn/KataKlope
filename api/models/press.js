@@ -4,6 +4,8 @@ const sql = require("./dbServices.js");
 // constructor
 const Press = function (press) {
     this.date=press.date
+    this.time=press.time
+
 };
 
 Press.create = (newPress, result) => {
