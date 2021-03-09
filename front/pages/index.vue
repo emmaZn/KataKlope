@@ -5,24 +5,73 @@
         kataklope
       </h1>
     </div>
-    <div class="chart ">
-      <CommitChart/>
+    <div class="chart " v-if="pressDate.length > 0">
+      <CommitChart :chartData="pressDate" :options="chartOptions"/>
     </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios'
   // import CommitChart from '@/components/CommitChart'
   export default {
     // components: {
     //   CommitChart
-    // }
-    mounted() {
-
+    // },
+    data() {
+      return {
+        pressDate : [],
+        pressTime : [],
+        press : [],
+        loaded: false,
+        chartOptions: {
+          responsive: true,
+          maintainAspectRatio: false
+        },
+        tmp:null
+      }
+  },
+    async created() {
+      // const {data} = await axios.get('http://192.168.1.243:5000/press')
+      // console.log(data)
+      await this.getData()
+      
     },
     methods:{
       getData() {
-        
+        axios.get('http://192.168.1.243:5000/press')
+        .then((response) => {
+          // console.log("press ", response.data);
+          response.data.forEach(d => {
+            const date = d.date
+            const time = d.time
+            const year = `20${date.substr(0,2)}`
+            const mounth = `${date.substr(2,2)}`
+            const day = `${date.substr(4,2)}`
+            const hour = `${date.substr(6,2)}`
+            const moment = day + "/" + mounth + "/" + year + " " + hour + "H"
+            console.log(hour, this.tmp)
+            console.log(this.tmp + 1 != hour)
+
+            if (this.tmp + 1 != hour) {
+              // console.log (moment)
+            }
+            let found = this.pressDate.find(p => p.moment == moment)
+            if (found) {
+              found.nb++
+              found.time += time
+            } else {
+              this.pressDate.push({moment, nb:1, time:time})
+              this.tmp = hour
+              // console.log(this.tmp)
+            }
+
+          });
+          this.press = response.data
+          // console.log(this.press)
+          // console.log(this.pressDate)
+        })
+        .catch((error) => console.log("Product error ", error))
       }
     }
   }
@@ -37,9 +86,10 @@
     font-family: 'Poppins', sans-serif;
   }
   .chart {
-    @apply rounded-xl shadow-2xl bg-gray-900 p-10;
+    @apply rounded-xl p-10;
     /* color: #; */
-    box-shadow: 9px 9px 16px rgba(30,30,30,0.6), -9px -9px 16px rgba(30,30,30, 0.5);
+    background: #131820;
+    box-shadow: -9px -9px 10px rgba(29, 36, 47, 0.25), 9px 9px 10px rgba(0, 0, 0, 0.25), inset 9px 9px 10px rgba(29, 36, 47, 0.5), inset -9px -9px 10px rgba(0, 0, 0, 0.25);
   }
 
 

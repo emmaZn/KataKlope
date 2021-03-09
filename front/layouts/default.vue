@@ -22,7 +22,7 @@ html {
   margin: 0;
 }
 .default {
-  background: #06040f;
+  background: #131820;
 }
 .button--green {
   display: inline-block;
