@@ -12,8 +12,10 @@ exports.create = (req, res) => {
 
     });
 }
-exports.getAll = (req, res) => {
-    Press.getAll((err, data) => {
+exports.getDay = (req, res) => {
+    console.log('date', req.query)
+    let day = req.query.day
+    Press.getDay(day, (err, data) => {
         if (err)
             res.status(500).send({
                 message: err.message || "Some error occurred while retrieving Pressss."

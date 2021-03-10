@@ -22,8 +22,8 @@ Press.create = (newPress, result) => {
     });
 };
 
-Press.getAll = result => {
-    sql.query("SELECT * FROM Press", (err, res) => {
+Press.getDay = (day,result) => {
+    sql.query(`SELECT * FROM Press WHERE date >= ${day * 100} AND date < ${day *100 + 99}`, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(null, err);
