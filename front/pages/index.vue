@@ -59,7 +59,7 @@ export default {
         this.pressDate[i]=obj;
       }
       axios
-        .get("http://localhost:5000/pressDay", { params: { day: this.date } })
+        .get("http://192.168.1.243:5000/pressDay", { params: { day: this.date } })
         .then((response) => {
           console.log("press ", response.data);
           response.data.forEach((d) => {
