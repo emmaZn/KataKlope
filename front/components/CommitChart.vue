@@ -30,17 +30,11 @@
       const dayNow = moment().format('DD/MM/YYYY')
       console.log(dayNow)
       console.log(dates)
-      // this.chartData.forEach(d => {
-      //   console.log(d.time)
-      //   // if (d.time )
-      //   this.timeString = moment(d.time * 1000).format('HH:mm:ss')
-
-      // });
       this.renderChart({
         labels: dates,
         datasets: [{
           label: 'ml de liquide Inhalé par heures',
-          backgroundColor: '#bb3434',
+          backgroundColor: '#C71585',
           data: times
         }],
       })

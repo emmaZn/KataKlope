@@ -1,9 +1,51 @@
 <template>
-  <div class="container poppins">
+  <div class="container poppins" data-app>
+    <v-dialog v-model="dialog" persistent max-width="1000px">
+      <v-card dark>
+        <v-card-title class="headline">
+          Configuration de votre KataKlope
+        </v-card-title>
+        <v-row justify="center" class="ma-0 pa-0" style="margin: 0px">
+          <v-col cols="10" class="ma-0 pa-0">
+            <v-text-field label="Puissance de votre cigarette (watts)" />
+            <v-text-field label="Quantité de nicotine dans le e-liquide (mg)" />
+            <v-radio-group
+              v-model="row"
+              label="A quelle fréquence fumez-vous ?"
+            >
+              <v-radio
+                class="ml-16"
+                label=" Moins de 5 fois par jour"
+                value="radio-1"
+              ></v-radio>
+              <v-radio
+                class="ml-16"
+                label=" Entre 5 et 15 fois par jour"
+                value="radio-2"
+              ></v-radio>
+              <v-radio
+                class="ml-16"
+                label=" Plus de 15 fois par jour"
+                value="radio-3"
+              ></v-radio>
+            </v-radio-group>
+            <v-radio-group
+              v-model="row2"
+              label="Vous souhaitez que votre programme soit : "
+            >
+              <v-radio class="ml-16" label=" Libre" value="radio-1"></v-radio>
+              <v-radio class="ml-16" label=" Modéré" value="radio-2"></v-radio>
+              <v-radio class="ml-16" label=" Sérieux" value="radio-3"></v-radio>
+            </v-radio-group>
+            <v-btn @click="save" class="mb-2">Sauvegarder les paramètres</v-btn>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-dialog>
     <div>
       <h1 class="title">kataklope</h1>
     </div>
-    <v-row>
+    <v-row v-if="loaded">
       <v-btn icon dark class="mb-2" @click="previous"
         ><v-icon>mdi-arrow-left</v-icon></v-btn
       >
@@ -13,7 +55,11 @@
       >
     </v-row>
     <div class="chart" v-if="loaded">
-      <CommitChart :chartData="pressDate" :options="chartOptions" :key="componentKey"/>
+      <CommitChart
+        :chartData="pressDate"
+        :options="chartOptions"
+        :key="componentKey"
+      />
     </div>
   </div>
 </template>
@@ -25,6 +71,7 @@ export default {
     return {
       componentKey: 0,
       pressDate: [],
+      dialog: true,
       day: "",
       date: "",
       dateFormated: "",
@@ -33,6 +80,8 @@ export default {
         responsive: true,
         maintainAspectRatio: false,
       },
+      row: "",
+      row2: "",
     };
   },
   async created() {
@@ -56,20 +105,23 @@ export default {
           moment: this.dateFormated + i.toString(),
           time: 0,
         };
-        this.pressDate[i]=obj;
+        this.pressDate[i] = obj;
       }
       axios
-        .get("http://192.168.1.243:5000/pressDay", { params: { day: this.date } })
+        .get("http://192.168.1.243:5000/pressDay", {
+          params: { day: this.date },
+        })
         .then((response) => {
           console.log("press ", response.data);
           response.data.forEach((d) => {
             const date = d.date;
             const time = d.time;
-            const hour = `${date.substr(6, 2)}`;
+            let hour = date.substr(6, 2);
+            if (hour < 10) hour = hour.substr(1, 1);
+            console.log(hour);
             this.pressDate[hour].time += time;
           });
           this.press = response.data;
-          this.loaded = true;
           this.componentKey += 1;
         })
         .catch((error) => console.log("error ", error));
@@ -106,6 +158,10 @@ export default {
       this.getDay(this.day);
       this.getData();
     },
+    save() {
+      this.dialog = false;
+      this.loaded = true;
+    },
   },
 };
 </script>
@@ -120,7 +176,7 @@ export default {
 .chart {
   @apply rounded-xl p-10;
   /* color: #; */
-  background: #131820;
+  background: #1e1e1e;
   min-width: 60%;
   box-shadow: -9px -9px 10px rgba(29, 36, 47, 0.25),
     9px 9px 10px rgba(0, 0, 0, 0.25), inset 9px 9px 10px rgba(29, 36, 47, 0.5),
@@ -135,13 +191,13 @@ export default {
   font-weight: 300;
   font-size: 100px;
   letter-spacing: 1px;
-  color: #2f6cb1;
+  color: white;
 }
 
 .subtitle {
   font-weight: 300;
   font-size: 42px;
-  color: rgb(82, 83, 85);
+  color: white;
   word-spacing: 5px;
   padding-bottom: 15px;
 }
